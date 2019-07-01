@@ -5,7 +5,6 @@ const Filter = (props) => {
     useState(() => {
         axios.get(`http://api.apixu.com/v1/current.json?key=bb73c289045849c1b1361318190107&q=${props.capital}`)
         .then(response => {
-            console.log(response)
             props.setNewWeather(response.data.current)
         })
     }, [])
