@@ -14,7 +14,7 @@ const Filter = (props) => {
         <h2>Weather in {props.capital}</h2>
         <p><b>Temperature: </b> {props.newWeather.temp_c} Celsius</p>
         <img alt={props.newWeather.condition.text} src={props.newWeather.condition.icon} />
-        <p><b>Wind: </b> {props.newWeather.wind_kph} direction {props.newWeather.wind_dir}</p>
+        <p><b>Wind: </b> {props.newWeather.wind_kph} kph direction {props.newWeather.wind_dir}</p>
         </>
     )
 }
