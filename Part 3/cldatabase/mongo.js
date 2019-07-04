@@ -1,5 +1,3 @@
-//pass: iHUfPcW3jG4SpuPt
-//mongodb+srv://sergamar:<password>@fullstack-z5dso.mongodb.net/phonebook?retryWrites=true&w=majority
 
 const mongoose = require('mongoose')
 
