@@ -59,14 +59,24 @@ const App = () => {
     }
     phoneService.create(newPerson).then(data => {
       setPersons(persons.concat(data))
+      setMessage({
+        class: 'success',
+        text: `${newName} registered successfully!`
+      })
+      setTimeout(() =>{
+        setMessage(null)
+      }, 5000)
+    }).catch(error => {
+      setMessage({
+        class: 'error',
+        text: error.response.data.error
+      })
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+      return
     })
-    setMessage({
-      class: 'success',
-      text: `${newName} registered successfully!`
-    })
-    setTimeout(() =>{
-      setMessage(null)
-    }, 5000)
+    
     setNewName('')
     setNewNumber('')
   }
