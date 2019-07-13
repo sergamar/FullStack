@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose",
-    "start": "node index.js",
-    "watch": "nodemon index.js"
+    "start": "cross-env NODE_ENV=production node index.js",
+    "watch": "cross-env NODE_ENV=development nodemon index.js",
+    "test": "cross-env NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "Sergio Galán Martín",
   "license": "ISC",
@@ -17,8 +17,10 @@
   },
   "devDependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^5.2.0",
     "jest": "^24.8.0",
     "mongoose": "^5.6.4",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
   }
 }
