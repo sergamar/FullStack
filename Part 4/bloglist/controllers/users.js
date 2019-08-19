@@ -33,24 +33,5 @@ usersRouter.post('/', async (request, response, next) => {
     .then(result => {
       response.status(201).json(result)
     }).catch(error => next(error))
-})
-
-/*blogsRouter.delete('/:id', (request, response) => {
-  Blog.findByIdAndRemove(request.params.id)
-  .then(() => {
-    response.status(204).end()
-  })
-})
-
-blogsRouter.put('/:id', (request, response) => {
-  const blog = {
-    likes: request.body.likes
-  }
-
-  Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-  .then(updatedBlog => {
-    response.json(updatedBlog.toJSON())
-  })
-})
-*/
+}
 module.exports = usersRouter
