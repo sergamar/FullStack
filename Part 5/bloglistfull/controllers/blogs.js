@@ -58,7 +58,7 @@ blogsRouter.delete('/:id', async (request, response, next) => {
     if(blogToDel.user.toString() !== decodedToken.id.toString()){
       return response.status(401).json({ error: 'blog doesn\'t belong to the user'})
     }
-    Blog.findByIdAndRemove(request.params.id)
+    Blog.findByIdAndRemove(request.params.id, { useFindAndModify: false})
     .then(() => {
       response.status(204).end()
     })
@@ -77,7 +77,7 @@ blogsRouter.put('/:id', (request, response) => {
     likes: request.body.likes
   }
 
-  Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+  Blog.findByIdAndUpdate(request.params.id, blog, { new: true , useFindAndModify: false})
   .then(updatedBlog => {
     response.json(updatedBlog.toJSON())
   })
