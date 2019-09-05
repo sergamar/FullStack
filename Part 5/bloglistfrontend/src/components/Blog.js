@@ -12,7 +12,7 @@ const Blog = ({ blog, selectedTitle, setSelectedTitle, updateLikes, blogs, setBl
   if (blog.title === selectedTitle){
     if (user === null || blog.user.username !== user.username){
       return (
-    <div style={blogStyle}>
+    <div style={blogStyle} class='blog'>
       <div onClick={() => setSelectedTitle(null)}>
         {blog.title} {blog.author}<br/>{blog.url}<br/> {blog.likes} 
         <button onClick={() => updateLikes(blog, blogs, setBlogs)}> like </button> 
@@ -22,7 +22,7 @@ const Blog = ({ blog, selectedTitle, setSelectedTitle, updateLikes, blogs, setBl
     }
     else{
       return(
-        <div style={blogStyle}>
+        <div style={blogStyle} class='blog'>
       <div onClick={() => setSelectedTitle(null)}>
         {blog.title} {blog.author}<br/>{blog.url}<br/> {blog.likes} 
         <button onClick={() => updateLikes(blog, blogs, setBlogs)}> like </button> 
@@ -34,7 +34,7 @@ const Blog = ({ blog, selectedTitle, setSelectedTitle, updateLikes, blogs, setBl
     }
   }
   else{
-  return (<div style={blogStyle}>
+  return (<div style={blogStyle} class='blog'>
     <div onClick={() => setSelectedTitle(blog.title)}>
       {blog.title} <br/>{blog.author}
     </div>

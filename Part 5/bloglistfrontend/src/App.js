@@ -5,17 +5,18 @@ import Blog from './components/Blog'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Toggable from './components/Toggable'
+import {useField} from './hooks/index'
 import './index.css'
 
 const App = () => {
   const [blogs, setBlogs] = useState([]) 
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newUrl, setNewUrl] = useState('')
+  const newTitle = useField('text')
+  const newAuthor = useField('text')
+  const newUrl = useField('text')
   const [errorMessage, setErrorMessage] = useState(null)
   const [successMessage, setSuccessMessage] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const username = useField('text')
+  const password = useField('password')
   const [user, setUser] = useState(null)
   const [selectedTitle, setSelectedTitle] = useState(null)
   const blogFormRef = React.createRef()
@@ -27,16 +28,27 @@ const App = () => {
       })
   }, [])
 
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON){
+      const loadedUser = JSON.parse(loggedUserJSON)
+      setUser(loadedUser)
+    }
+  },[])
+
   const handleLogin = async (event) => {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username, password,
+      username: username.value, password: password.value
       })
 
       setUser(user)
-      setUsername('')
-      setPassword('')
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      )
+      username.reset()
+      password.reset()
     } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
@@ -48,12 +60,12 @@ const App = () => {
   const addBlog = (event) => {
     event.preventDefault()
     try{
-      blogServices.uploadBlog(newTitle, newAuthor, newUrl, user.token)
-      setSuccessMessage(newTitle + ' has been added successfully!!')
+      blogServices.uploadBlog(newTitle.value, newAuthor.value, newUrl.value, user.token)
+      setSuccessMessage(newTitle.value + ' has been added successfully!!')
       setBlogs(blogs.concat({
-        title: newTitle,
-        author: newAuthor,
-        url: newUrl,
+        title: newTitle.value,
+        author: newAuthor.value,
+        url: newUrl.value,
         likes: 0,
         user: user
       }))
@@ -72,7 +84,10 @@ const App = () => {
   const logged = () => (
     <div>
     {user.username} logged in.
-    <button onClick={() => setUser(null)}>
+    <button onClick={() => {
+      setUser(null)
+      window.localStorage.removeItem('loggedBlogappUser')
+      }}>
       logout
     </button>
     </div>
@@ -105,17 +120,17 @@ const App = () => {
 
       <h2>Login</h2>
 
-      {user === null ? <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername} password={password} setPassword={setPassword}/>: 
+      {user === null ? <LoginForm handleLogin={handleLogin} username={username} password={password}/>: 
     <Toggable buttonLabel="New Blog" ref={blogFormRef}>
-      <BlogForm addBlog={addBlog} newTitle={newTitle} setNewTitle={setNewTitle} newAuthor={newAuthor} setNewAuthor={setNewAuthor} newUrl={newUrl} setNewUrl={setNewUrl}/>
+      <BlogForm addBlog={addBlog} newTitle={newTitle} newAuthor={newAuthor} newUrl={newUrl}/>
     </Toggable>}
       
-        {blogs.sort((blog1, blog2) => {
+        { user !== null ? blogs.sort((blog1, blog2) => {
           return blog2.likes-blog1.likes
         }).map( blog => (
           <Blog blog={blog} selectedTitle={selectedTitle} setSelectedTitle={setSelectedTitle} updateLikes={blogServices.updateLikes} blogs={blogs} setBlogs={setBlogs}
           deleteBlog={blogServices.deleteBlog} user={user}/>
-        ))}
+        )): nothing()}
     </div>
   )
 }

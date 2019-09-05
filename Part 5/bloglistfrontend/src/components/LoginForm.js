@@ -1,27 +1,24 @@
 import React from "react"
+import CustomInput from "./CustomInput"
 
-const loginForm = ({handleLogin, username, setUsername, password, setPassword}) => (
+const loginForm = ({handleLogin, username, password}) => (
+  <div>
     <form onSubmit={handleLogin}>
       <div>
         username
-          <input
-          type="text"
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)}
+          <CustomInput
+          {...username}
         />
       </div>
       <div>
         password
-          <input
-          type="password"
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)}
+          <CustomInput
+          {...password}
         />
       </div>
       <button type="submit">login</button>
-    </form>      
+    </form> 
+    </div>    
   )
 
   export default loginForm
